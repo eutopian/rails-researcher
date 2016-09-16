@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160916185157) do
+ActiveRecord::Schema.define(version: 20160916215554) do
 
   create_table "users", force: :cascade do |t|
     t.string   "username",               default: "", null: false
@@ -28,6 +28,10 @@ ActiveRecord::Schema.define(version: 20160916185157) do
     t.datetime "remember_created_at"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.string   "provider"
+    t.string   "uid"
+    t.index ["provider"], name: "index_users_on_provider"
+    t.index ["uid"], name: "index_users_on_uid"
   end
 
 end
