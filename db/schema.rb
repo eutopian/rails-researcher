@@ -10,13 +10,50 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160916215554) do
+ActiveRecord::Schema.define(version: 20160919181721) do
+
+  create_table "articles", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "author_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.string   "document_file_name"
+    t.string   "document_content_type"
+    t.integer  "document_file_size"
+    t.datetime "document_updated_at"
+    t.integer  "topic_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string   "content"
+    t.integer  "user_id"
+    t.integer  "article_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "reviewer_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.string   "document_file_name"
+    t.string   "document_content_type"
+    t.integer  "document_file_size"
+    t.datetime "document_updated_at"
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "article_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "username",               default: "", null: false
     t.string   "email",                  default: "", null: false
     t.string   "password_digest"
-    t.integer  "article_id"
     t.string   "first_name"
     t.string   "middle_name"
     t.string   "last_name"

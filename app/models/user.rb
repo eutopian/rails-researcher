@@ -9,6 +9,10 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   has_secure_password
   validates :password, presence: true, length: { minimum: 6, maximum: 30 }
+  has_many :articles, :foreign_key => 'author_id'
+  has_many :reviews, :foreign_key => 'reviewer_id'
+  has_many :topics, through: :articles
+
 
   def self.create_with_omniauth(auth)
     create! do |user|
