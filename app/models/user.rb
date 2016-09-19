@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :articles, :foreign_key => 'author_id'
   has_many :reviews, :foreign_key => 'reviewer_id'
   has_many :topics, through: :articles
+  has_many :comments
 
 
   def self.create_with_omniauth(auth)
@@ -22,7 +23,7 @@ class User < ApplicationRecord
     end
   end
 
-  def most_topic
+  def most_article_topic
     topics = []
     counted = Hash.new(0)
     articles = self.articles.all
@@ -30,6 +31,32 @@ class User < ApplicationRecord
     topics.each { |t| counted[t["id"]] += 1 }
     counted = Hash[counted.map {|k,v| [k,v.to_i] }]
     Topic.find(counted.max_by {|k,v| v}[0])
+  end
+
+  def most_comment_topic
+    topics = []
+    articles = []
+    counted = Hash.new(0)
+    comments = self.comments.all
+    comments.each { |com| articles << com.article }
+    articles.each { |art| topics << art.topic }
+    topics.each { |t| counted[t["id"]] += 1 }
+    counted = Hash[counted.map {|k,v| [k,v.to_i] }]
+    Topic.find(counted.max_by {|k,v| v}[0])
+  end
+
+  def most_review_topic
+    topics = []
+    counted = Hash.new(0)
+    reviews = self.reviews.all
+    reviews.each { |rev| articles << rev.article }
+    articles.each { |art| topics << art.topic }
+    topics.each { |t| counted[t["id"]] += 1 }
+    counted = Hash[counted.map {|k,v| [k,v.to_i] }]
+    Topic.find(counted.max_by {|k,v| v}[0])
+  end
+
+  def find_topic
   end
 
 
