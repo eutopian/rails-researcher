@@ -22,6 +22,17 @@ class User < ApplicationRecord
     end
   end
 
+  def most_topic
+    topics = []
+    counted = Hash.new(0)
+    articles = self.articles.all
+    articles.each { |art| topics << art.topic }
+    topics.each { |t| counted[t["id"]] += 1 }
+    counted = Hash[counted.map {|k,v| [k,v.to_i] }]
+    Topic.find(counted.max_by {|k,v| v}[0])
+  end
+
+
 protected
 	def name_format(name)
 		name.downcase
