@@ -1,0 +1,9 @@
+Welcome <br>
+<%= link_to "Home", root_path %><br>
+<% if @user && session[:user_id] == @user.id %>
+	<%= link_to @user.first_name, root_path %><br>
+	<%= link_to "Log Out", logout_path, method: :delete %><br>
+<% else %>
+	<%= link_to "Register", new_user_path %><br>
+	<%= link_to "Sign In", login_path %><br>
+<% end %>

@@ -56,10 +56,6 @@ class User < ApplicationRecord
     Topic.find(counted.max_by {|k,v| v}[0])
   end
 
-  def find_topic
-  end
-
-
 protected
 	def name_format(name)
 		name.downcase
