@@ -6,4 +6,6 @@ Welcome <br>
 <% else %>
 	<%= link_to "Register", new_user_path %><br>
 	<%= link_to "Sign In", login_path %><br>
+	<%= link_to "Sign in with Twitter", "/auth/twitter" %>
+	<%= link_to "Sign in with Facebook", "/auth/facebook" %>
 <% end %>

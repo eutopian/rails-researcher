@@ -7,8 +7,8 @@ class User < ApplicationRecord
   validates :email, presence: true, length: { maximum: 255 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
-  has_secure_password
-  validates :password, presence: true, length: { minimum: 6, maximum: 30 }
+  has_secure_password validations: false
+  validates :password, presence: true, length: { minimum: 6 }, unless: :has_uid
   has_many :articles, :foreign_key => 'author_id'
   has_many :reviews, :foreign_key => 'reviewer_id'
   has_many :topics, through: :articles
@@ -16,11 +16,19 @@ class User < ApplicationRecord
 
 
   def self.create_with_omniauth(auth)
-    create! do |user|
+    new_user = self.new do |user|
       user.provider = auth["provider"]
       user.uid = auth["uid"]
       user.name = auth["info"]["name"]
+      user.email = auth["info"]["email"]
+      user.username = auth["extra"]["raw_info"]["username"] || user.email
     end
+    new_user.save
+    new_user
+  end
+
+  def has_uid
+    self.uid?
   end
 
   def most_article_topic
@@ -54,6 +62,13 @@ class User < ApplicationRecord
     topics.each { |t| counted[t["id"]] += 1 }
     counted = Hash[counted.map {|k,v| [k,v.to_i] }]
     Topic.find(counted.max_by {|k,v| v}[0])
+  end
+
+
+  def name=(name)
+    names = name.split(" ")
+    self.first_name = names[0]
+    self.last_name = names[-1]
   end
 
 protected

@@ -1,0 +1,16 @@
+Upload an Article:
+
+<%= form_for @article, html: {multipart: true} do |f| %>
+  <%= f.label :document %>
+  <%= f.file_field :document %>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+  <%= f.label :topic_id %>
+  <%= f.text_field :topic_id %>
+  <%= f.submit %>
+<% end %><br><br>
+
+Past Articles:
+<%= @user.articles.all.each do |article| %>
+	<%= article.title %>
+<% end %>

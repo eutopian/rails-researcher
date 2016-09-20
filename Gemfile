@@ -29,6 +29,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'paperclip', '~> 4.3', '>= 4.3.6'
+gem 'dotenv-rails'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
