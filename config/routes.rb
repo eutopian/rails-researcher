@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root to: 'users#index'
   resources :users
   resources :articles
+  resources :comments
   get '/login' => 'sessions#new', as: 'login'
   post '/login' => 'sessions#create'
   get '/signup' => 'users#new', as: 'signup'
