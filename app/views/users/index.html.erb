@@ -1,4 +1,4 @@
 <% Article.all.each do |article| %>
-	<%= article.title %>    |  
-	<%= article.author.last_name + ", " + article.author.first_name %><br><br>
+	<%= link_to article.title, article_path(article) %>    |  
+	<%= link_to article.author.last_name + ", " + article.author.first_name, user_path(article.author) %><br><br>
 <% end %>

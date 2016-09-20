@@ -1,3 +1,5 @@
+<% if @user && session[:user_id] == @user.id %>
+
 Upload an Article:
 
 <%= form_for @article, html: {multipart: true} do |f| %>
@@ -21,6 +23,7 @@ Past Articles:
 <% @user.articles.all.each do |article| %>
 	<%= article.title %>
 	<%= link_to "View", article.document.url(:original, false) %>
-	<%= link_to "Edit", edit_article_path %>
+	<%= link_to "Edit", edit_article_path(article) %>
 	<%= link_to "Delete", article_path(article), method: :delete %>
+<% end %>
 <% end %>
