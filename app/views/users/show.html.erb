@@ -11,6 +11,7 @@ Upload an Article:
 <% end %><br><br>
 
 Past Articles:
-<%= @user.articles.all.each do |article| %>
+<% @user.articles.all.each do |article| %>
 	<%= article.title %>
+	<%= link_to "Download", article.document.url(:original, false) %>
 <% end %>
