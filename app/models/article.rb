@@ -2,7 +2,7 @@ class Article < ApplicationRecord
 	belongs_to :author, :class_name => "User"
 	belongs_to :topic
 	has_many :reviews
-	has_many :comments, :inverse_of => :article
+	has_many :comments
 	accepts_nested_attributes_for :topic, reject_if: :all_blank
 	accepts_nested_attributes_for :comments, reject_if: :all_blank
 
