@@ -4,14 +4,23 @@ Upload an Article:
   <%= f.label :document %>
   <%= f.file_field :document %>
   <%= f.label :title %>
-  <%= f.text_field :title %>
-  <%= f.label :topic_id %>
-  <%= f.text_field :topic_id %>
+  <%= f.text_field :title %><br>
+  <br>
+  Select an existing popular topic:
+  <%= f.collection_select( :topic_id, Topic.all, :id, :name, {:include_blank => 'Please Select'}) %>
+  <br>
+  Add a new topic:
+  <%= f.fields_for :topic, @article.build_topic do |topic_attributes| %> 
+  <%= topic_attributes.text_field :name %>
+  <% end %>
+
   <%= f.submit %>
 <% end %><br><br>
 
 Past Articles:
 <% @user.articles.all.each do |article| %>
 	<%= article.title %>
-	<%= link_to "Download", article.document.url(:original, false) %>
+	<%= link_to "View", article.document.url(:original, false) %>
+	<%= link_to "Edit", edit_article_path %>
+	<%= link_to "Delete", article_path(article), method: :delete %>
 <% end %>

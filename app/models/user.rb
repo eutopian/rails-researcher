@@ -20,8 +20,8 @@ class User < ApplicationRecord
       user.provider = auth["provider"]
       user.uid = auth["uid"]
       user.name = auth["info"]["name"]
-      user.email = auth["info"]["email"] || 
-      user.username = auth["extra"]["raw_info"]["username"] || user.email
+      user.email = auth["info"]["email"] || auth["info"]["nickname"] + "@__twitter.com"
+      user.username = auth["extra"]["raw_info"]["username"] || auth["info"]["nickname"] || user.email 
     end
     new_user.save
     new_user

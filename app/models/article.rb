@@ -3,6 +3,7 @@ class Article < ApplicationRecord
 	belongs_to :topic
 	has_many :reviews
 	has_many :comments
+	accepts_nested_attributes_for :topic, reject_if: :all_blank
 
 	has_attached_file :document
  	validates_attachment :document, :content_type => { :content_type => %w(application/pdf application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document) }
