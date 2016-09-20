@@ -1,25 +1,18 @@
-# README
+# RAILS-RESEARCHER
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This web app provides basic functionalities in maintaining an academic journal submissions system.
 
-Things you may want to cover:
+* This app is build in Rails 5
 
-* Ruby version
+* It allows users to create an account or sign in through Facebook, Twitter, or Google+
 
-* System dependencies
+* It allows users to upload articles.
 
-* Configuration
+* It allows other users to view the review the articles and reupload the reviewed copies of the articles.
 
-* Database creation
+* It also allows users to leave short comments on other users' articles. 
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
+* Based on the type of articles a user uploads, reviews, or comments, the site can also recommend new articles for the user to review.
 
 * ...
 # rails-researcher
