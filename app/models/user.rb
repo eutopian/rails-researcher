@@ -31,6 +31,20 @@ class User < ApplicationRecord
     self.uid?
   end
 
+  def topics_commented_on
+    self.comments.map { |com| com.article }.map { |art| art.topic }
+  end
+  
+  def get_max(array)
+    array.each_with_object(Hash.new(0)) { |topic, result| result[topic] += 1 }.max_by {|topic,count| count}[0]
+  end
+
+  def most_commented_topic
+    get_max(topics_commented_on)
+  end
+
+  
+
   def most_article_topic
     topics = []
     counted = Hash.new(0)
@@ -58,7 +72,7 @@ class User < ApplicationRecord
     counted = Hash.new(0)
     reviews = self.reviews.all
     reviews.each { |rev| articles << rev.article }
-    articles.each { |art| topics << art.topic }
+    self.articles.each { |art| topics << art.topic }
     topics.each { |t| counted[t["id"]] += 1 }
     counted = Hash[counted.map {|k,v| [k,v.to_i] }]
     Topic.find(counted.max_by {|k,v| v}[0])
