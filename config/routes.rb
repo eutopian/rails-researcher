@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   
   root to: 'users#index'
   resources :users
-  resources :articles
+  resources :articles do
+    resources :reviews
+  end
   resources :comments
   get '/login' => 'sessions#new', as: 'login'
   post '/login' => 'sessions#create'

@@ -23,8 +23,23 @@ class UsersController < ApplicationController
 		@article = Article.new
 	end
 
+	def edit
+		@user = current_user
+	end
+
+	def update
+		@user = current_user
+		if @user.update(user_params)
+			# byebug
+			redirect_to user_path(@user), :notice => "Successfully updated your information"
+		else
+			flash[:notice] = "Let's try that again"
+			render :edit
+		end
+	end
+
 	private
 	def user_params
-		params.require(:user).permit(:username, :password, :password_confirmation, :first_name, :middle_name, :last_name, :email, :affiliation)
+		params.require(:user).permit(:username, :password, :password_confirmation, :first_name, :middle_name, :last_name, :email, :affiliation, :reviewer)
 	end
 end

@@ -33,15 +33,21 @@ Topic.joins(articles: :comments).joins(:users).where("user_id = 9").max
   end
 
   def most_commented_topic
-    Topic.find(Topic.joins(articles: :comments).joins(:users).where("user_id = #{self.id}").group("topics.id").count.max_by {|topic,count| count}[0])
+    if Topic.joins(articles: :comments).joins(:users).where("user_id = #{self.id}").any?
+      Topic.find(Topic.joins(articles: :comments).joins(:users).where("user_id = #{self.id}").group("topics.id").count.max_by {|topic,count| count}[0])
+    end
   end
 
   def most_article_topic
-    Topic.find(Topic.joins(articles: :author).where("user_id = #{self.id}").group("topics.id").count.max_by {|topic,count| count}[0])
+    if Topic.joins(articles: :author).where("author_id = #{self.id}").any?
+      Topic.find(Topic.joins(articles: :author).where("author_id = #{self.id}").group("topics.id").count.max_by {|topic,count| count}[0])
+    end
   end
 
   def most_review_topic
-    Topic.find(Topics.joins(articles: :reviews).joins(:users).where("user_id = #{self.id}").group("topics.id").count.max_by {|topic,count| count}[0])
+    if Topic.joins(articles: :reviews).joins(:users).where("reviewer_id = #{self.id}").any?
+      Topic.find(Topic.joins(articles: :reviews).joins(:users).where("reviewer_id = #{self.id}").group("topics.id").count.max_by {|topic,count| count}[0])
+    end
   end
 
   def name=(name)
