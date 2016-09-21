@@ -13,15 +13,13 @@ class User < ApplicationRecord
   has_many :reviews, :foreign_key => 'reviewer_id'
   has_many :topics, through: :articles
   has_many :comments
-
-Topic.joins(articles: :comments).joins(:users).where("user_id = 9").max
-
+  
   def self.create_with_omniauth(auth)
     new_user = self.new do |user|
       user.provider = auth["provider"]
       user.uid = auth["uid"]
       user.name = auth["info"]["name"]
-      user.email = auth["info"]["email"] || auth["info"]["nickname"] + "@__twitter.com"
+      user.email = auth["info"]["email"] || auth["info"]["nickname"] + "@twitter.com"
       user.username = auth["extra"]["raw_info"]["username"] || auth["info"]["nickname"] || user.email 
     end
     new_user.save
@@ -48,6 +46,10 @@ Topic.joins(articles: :comments).joins(:users).where("user_id = 9").max
     if Topic.joins(articles: :reviews).joins(:users).where("reviewer_id = #{self.id}").any?
       Topic.find(Topic.joins(articles: :reviews).joins(:users).where("reviewer_id = #{self.id}").group("topics.id").count.max_by {|topic,count| count}[0])
     end
+  end
+
+  def recommended_topic
+    [most_review_topic, most_article_topic, most_commented_topic].uniq
   end
 
   def name=(name)
