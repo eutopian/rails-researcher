@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 			session[:user_id] = @user.id
 			redirect_to user_path(@user)
 		else
+			flash[:notice] = "Please make sure all fields are filled before pressing submit"
 			redirect_to new_user_path
 		end
 	end

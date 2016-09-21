@@ -1,6 +1,6 @@
 class User < ApplicationRecord
-	before_save { self.email = email.downcase, self.first_name = name_format(first_name), self.last_name = name_format(last_name)}
-  validates :username, presence: true, length: { minimum: 6, maximum: 50 }
+	before_save :downcase_email, :format_name
+  validates :username, presence: true, length: { minimum: 6, maximum: 50 }, uniqueness: true
   validates :first_name, presence: true, length: { minimum: 2, maximum: 50 } 
   validates :last_name, presence: true, length: { minimum: 2, maximum: 50 }
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :topics, through: :articles
   has_many :comments
 
+Topic.joins(articles: :comments).joins(:users).where("user_id = 9").max
 
   def self.create_with_omniauth(auth)
     new_user = self.new do |user|
@@ -31,53 +32,17 @@ class User < ApplicationRecord
     self.uid?
   end
 
-  def topics_commented_on
-    self.comments.map { |com| com.article }.map { |art| art.topic }
-  end
-  
-  def get_max(array)
-    array.each_with_object(Hash.new(0)) { |topic, result| result[topic] += 1 }.max_by {|topic,count| count}[0]
-  end
-
   def most_commented_topic
-    get_max(topics_commented_on)
+    Topic.find(Topic.joins(articles: :comments).joins(:users).where("user_id = #{self.id}").group("topics.id").count.max_by {|topic,count| count}[0])
   end
-
-  
 
   def most_article_topic
-    topics = []
-    counted = Hash.new(0)
-    articles = self.articles.all
-    articles.each { |art| topics << art.topic }
-    topics.each { |t| counted[t["id"]] += 1 }
-    counted = Hash[counted.map {|k,v| [k,v.to_i] }]
-    Topic.find(counted.max_by {|k,v| v}[0])
-  end
-
-  def most_comment_topic
-    topics = []
-    articles = []
-    counted = Hash.new(0)
-    comments = self.comments.all
-    comments.each { |com| articles << com.article }
-    articles.each { |art| topics << art.topic }
-    topics.each { |t| counted[t["id"]] += 1 }
-    counted = Hash[counted.map {|k,v| [k,v.to_i] }]
-    Topic.find(counted.max_by {|k,v| v}[0])
+    Topic.find(Topic.joins(articles: :author).where("user_id = #{self.id}").group("topics.id").count.max_by {|topic,count| count}[0])
   end
 
   def most_review_topic
-    topics = []
-    counted = Hash.new(0)
-    reviews = self.reviews.all
-    reviews.each { |rev| articles << rev.article }
-    self.articles.each { |art| topics << art.topic }
-    topics.each { |t| counted[t["id"]] += 1 }
-    counted = Hash[counted.map {|k,v| [k,v.to_i] }]
-    Topic.find(counted.max_by {|k,v| v}[0])
+    Topic.find(Topics.joins(articles: :reviews).joins(:users).where("user_id = #{self.id}").group("topics.id").count.max_by {|topic,count| count}[0])
   end
-
 
   def name=(name)
     names = name.split(" ")
@@ -90,4 +55,13 @@ protected
 		name.downcase
 		([name.split("").first.upcase] << [(name.split("").drop(1)).join("")]).join
 	end
+
+  def format_name
+    self.first_name = name_format(first_name)
+    self.last_name = name_format(last_name)
+  end
+
+  def downcase_email
+    self.email = email.downcase
+  end
 end

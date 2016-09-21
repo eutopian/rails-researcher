@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160919181721) do
+ActiveRecord::Schema.define(version: 20160921190632) do
 
   create_table "articles", force: :cascade do |t|
     t.string   "title"
@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 20160919181721) do
     t.string   "last_name"
     t.string   "affiliation"
     t.boolean  "reviewer"
-    t.integer  "role"
+    t.integer  "role",                   default: 0
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
