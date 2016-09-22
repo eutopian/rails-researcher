@@ -1,0 +1,21 @@
+<li class="comment">
+
+ 
+  <div class="body">
+    <%= comment.content %>
+  </div>
+
+  <%= form_for [Comment.new], html: {action: "articles/#{@article.id}/comments/#{comment.id}", class: 'new_comment', id: 'new_comment', } do |f| %>
+  <%= f.hidden_field :commentable_type %>
+  <%= f.text_area :content, class: 'form-control', placeholder: "Add a Reply" %>
+  <%= f.submit 'Add a Reply'%>
+  <% end %>
+   
+  
+   
+  <% unless comment.comments.empty? %>
+    <ul class="comment_list">
+      <%= render :partial => 'comments/comment', :collection => comment.comments %>
+    </ul>
+  <% end %>
+</li>

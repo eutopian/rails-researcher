@@ -1,0 +1,6 @@
+<%= render partial: "form", locals: {user: @user} %>
+
+<%= form_for @user do |f| %>
+	Do you want to be a reviewer? <%= f.check_box :reviewer, {}, "true", "false" %>
+	<%= submit_tag %>
+<% end %>

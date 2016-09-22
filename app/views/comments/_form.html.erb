@@ -1,0 +1,9 @@
+<%= form_for [commentable, Comment.new] do |f| %>
+	<%= f.hidden_field :commentable_type %>
+	<%= f.text_area :content, class: 'form-control', placeholder: "Add a Comment" %>
+	<%= f.submit %>
+<% end %>
+
+<ul>
+  <%= render(partial: 'comments/comment', collection: commentable.comments, locals: {comment: @comment}) %>
+</ul>

@@ -1,0 +1,48 @@
+<div>
+Title: <%= @article.title %><%= link_to "View", @article.document.url(:original, false) %><br>
+Author: <%= @article.author.first_name%> <%=@article.author.last_name %><br>
+Subject: <%= @article.topic.name %> <br>
+</div>
+
+<div>
+<% if @article.author != @user && @user.reviewer? %>
+  <% if !!@article.already_reviewed %>
+    <%= link_to "Review this Article", article_reviews_path(@article) %>
+  <% else %>
+    You have already reviewed this article
+  <% end %>
+<% end %>
+</div>
+
+<div>
+<% if @article.author == @user %>
+Edit: 
+<%= render partial: "form", locals: {article: @article} %>
+<% end %> 
+</div>
+<br><br><br><br>
+
+<div>
+
+
+<%= render partial: 'comments/form', locals: {commentable: @article} %>
+
+
+
+</div>
+<br><br><br><br>
+<div>
+Comments:<br>
+<% @article.comments.each do |c| %>
+<%= c.content %><br>
+<%= c.user.first_name if c.user %> <%= "#{time_ago_in_words(c.created_at)} ago" if c.created_at %><br>
+<% if c.user == @user %> 
+	 <% if c.created_at && c.created_at + 5.minutes > Time.now %> 
+		<%= link_to "Edit", "/comments/#{c.id}/edit" %>
+	<% end %>
+	<%= link_to "Delete", "/comments/#{c.id}", method: :delete %>
+<% end %>
+<br>
+----------------------<br>
+<% end %>
+</div>
