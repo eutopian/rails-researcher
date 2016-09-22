@@ -19,8 +19,13 @@ class UsersController < ApplicationController
 	end
 
 	def show
-		@user = User.find(params[:id])
+		@user = User.find_by(id: params[:id])
 		@article = Article.new
+		if @user
+			render :show
+		else
+			redirect_to "/signin"
+		end
 	end
 
 	def edit

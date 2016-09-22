@@ -1,9 +1,12 @@
 <%= form_for [commentable, Comment.new] do |f| %>
 	<%= f.hidden_field :commentable_type %>
+	<%= f.hidden_field :parent_id, value: @article.id %>
 	<%= f.text_area :content, class: 'form-control', placeholder: "Add a Comment" %>
 	<%= f.submit %>
 <% end %>
 
 <ul>
+  <% unless commentable.comments.empty? %>
   <%= render(partial: 'comments/comment', collection: commentable.comments, locals: {comment: @comment}) %>
+  <% end %>
 </ul>

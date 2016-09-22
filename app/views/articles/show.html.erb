@@ -30,19 +30,3 @@ Edit:
 
 
 </div>
-<br><br><br><br>
-<div>
-Comments:<br>
-<% @article.comments.each do |c| %>
-<%= c.content %><br>
-<%= c.user.first_name if c.user %> <%= "#{time_ago_in_words(c.created_at)} ago" if c.created_at %><br>
-<% if c.user == @user %> 
-	 <% if c.created_at && c.created_at + 5.minutes > Time.now %> 
-		<%= link_to "Edit", "/comments/#{c.id}/edit" %>
-	<% end %>
-	<%= link_to "Delete", "/comments/#{c.id}", method: :delete %>
-<% end %>
-<br>
-----------------------<br>
-<% end %>
-</div>

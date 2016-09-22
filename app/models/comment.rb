@@ -1,5 +1,5 @@
 class Comment < ApplicationRecord
-	attr_accessor :comment_id, :enabled, :user_id, :parent_id
+	attr_accessor :comment_id, :enabled, :user_id
 	
 	belongs_to :article, optional: true
 	belongs_to :user, optional: true

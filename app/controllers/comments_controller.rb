@@ -1,6 +1,5 @@
 class CommentsController < ApplicationController
 	before_action :find_commentable
-	# before_action :authenticate_user!
 
 	def index
 		@comments = @commentable.comments
@@ -18,7 +17,12 @@ class CommentsController < ApplicationController
 		@comment = @commentable.comments.create(comment_params)
 		@comment.user = current_user
 		@comment.save
-		redirect_to article_path(@comment.commentable), notice: 'Your comment was successfully posted!'
+		if @commentable.instance_of?(Article)
+			redirect_to article_path(@comment.commentable), notice: 'Your comment was successfully posted!'
+		else 
+			@article = Article.find_by(id: @comment.parent_id)
+			redirect_to article_path(@article), notice: 'Your reply was successfully posted!'
+		end
 	end
 
 	def edit
@@ -42,15 +46,16 @@ class CommentsController < ApplicationController
 
 	private
 	def comment_params
-		params.require(:comment).permit(:content)
+		params.require(:comment).permit(:content, :parent_id)
 	end
 
 
 	def find_commentable
-		# resource, id = request.path.split('/')[1, 2]
-  #   @commentable = resource.singularize.classify.constantize.find(id)
-
-    @commentable = Comment.find_by(id: params[:comment_id]) if params[:comment_id]
-    @commentable = Article.find_by(id: params[:article_id]) if params[:article_id]
+		if params[:article_id]
+    	@commentable = Article.find_by(id: params[:article_id])
+    else
+    	@commentable = Comment.find_by(id: params[:comment][:commentable_id])
+    	# @article = 
+    end
  	end
 end
