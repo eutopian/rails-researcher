@@ -16,17 +16,19 @@ Your Articles:
 	<% end %>
 <br>
 <br><br><br>
+
 Recommended Articles:
   <% if @user.most_commented_topic || @user.most_article_topic || @user.most_review_topic %>
-    <% @user.recommended_topic.each do |topic| %>
-      <% if topic %>
-          <% topic.articles.each do |article| %><br>
+    <% @user.recommended_articles[1].to_ary.take(20).each do |article| %><br>
+        <% if article %>
           <%= article.title %>
           <%= link_to "View", article.document.url(:original, false) %>
           <%= link_to "Go To", article_path(article) %>
           <% end %>
-      <% end %>
-    <% end %>
+        <% end %>  
+    
   <% end %>
+
+
 <% end %>
   

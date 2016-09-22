@@ -30,7 +30,6 @@ class UsersController < ApplicationController
 	def update
 		@user = current_user
 		if @user.update(user_params)
-			# byebug
 			redirect_to user_path(@user), :notice => "Successfully updated your information"
 		else
 			flash[:notice] = "Let's try that again"

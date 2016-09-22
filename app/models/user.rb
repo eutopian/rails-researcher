@@ -48,8 +48,12 @@ class User < ApplicationRecord
     end
   end
 
-  def recommended_topic
+  def recommended_topics
     [most_review_topic, most_article_topic, most_commented_topic].uniq
+  end
+
+  def recommended_articles
+    recommended_topics.map {|topic| topic.articles.where.not("author_id = #{self.id}") if topic }
   end
 
   def name=(name)

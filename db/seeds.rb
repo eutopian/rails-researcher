@@ -23,13 +23,13 @@ end
 20.times do
 	Article.create(
 		title: Faker::Book.title,
-		author_id: Faker::Number.between(1, 10),
+		author_id: Faker::Number.between(1, 29),
 		topic_id: Faker::Number.between(1, 10))
 end
 
-20.times do
+40.times do
 	Comment.create(
 		content: Faker::Lorem.sentences,
-		user_id: Faker::Number.between(1, 10),
-		article_id: Faker::Number.between(1, 15))
+		user_id: Faker::Number.between(1, 25),
+		article_id: Faker::Number.between(1, 42))
 end
