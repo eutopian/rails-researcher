@@ -49,7 +49,7 @@ class User < ApplicationRecord
   end
 
   def recommended_topics
-    [most_review_topic, most_article_topic, most_commented_topic].uniq
+    [most_article_topic, most_review_topic, most_commented_topic].uniq
   end
 
   def recommended_articles

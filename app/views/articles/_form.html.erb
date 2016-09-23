@@ -1,0 +1,16 @@
+<%= form_for article, html: {multipart: true} do |f| %>
+  <%= f.label :document %>
+  <%= f.file_field :document %>
+  <%= f.label :title %>
+  <%= f.text_field :title %><br>
+  <br>
+  Select an existing popular topic:
+  <%= f.collection_select( :topic_id, Topic.all, :id, :name, {:include_blank => 'Please Select'}) %>
+  <br>
+  Add a new topic:
+  <%= f.fields_for :topic, article.build_topic do |topic_attributes| %> 
+  <%= topic_attributes.text_field :name %>
+  <% end %>
+
+  <%= f.submit %>
+<% end %><br><br>

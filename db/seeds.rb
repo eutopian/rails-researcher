@@ -1,4 +1,4 @@
-10.times do 
+25.times do 
   User.create(
     username: Faker::Internet.user_name, 
     email: Faker::Internet.email, 
@@ -27,9 +27,22 @@ end
 		topic_id: Faker::Number.between(1, 10))
 end
 
-40.times do
+10.times do
 	Comment.create(
-		content: Faker::Lorem.sentences,
+		content: Faker::Lorem.sentence,
 		user_id: Faker::Number.between(1, 25),
-		article_id: Faker::Number.between(1, 42))
+		parent_id: Faker::Number.between(1, 20),
+		commentable_id: Faker::Number.between(1, 20),
+		commentable_type: "Article"
+		)
+end
+
+30.times do
+	Comment.create(
+		content: Faker::Lorem.sentence,
+		user_id: Faker::Number.between(1, 25),
+		parent_id: Faker::Number.between(1, 20),
+		commentable_id: Faker::Number.between(1, 20),
+		commentable_type: "Comment"
+		)
 end

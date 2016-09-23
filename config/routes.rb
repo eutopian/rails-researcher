@@ -2,10 +2,18 @@ Rails.application.routes.draw do
   
   root to: 'users#index'
   resources :users
+  
   resources :articles do
     resources :reviews
+    resources :comments do
+      resources :comments
+    end    
   end
-  resources :comments
+  
+  resources :comments do
+    resources :comments
+  end
+
   get '/login' => 'sessions#new', as: 'login'
   post '/login' => 'sessions#create'
   get '/signup' => 'users#new', as: 'signup'

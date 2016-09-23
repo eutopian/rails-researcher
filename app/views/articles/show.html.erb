@@ -1,0 +1,38 @@
+<div>
+Title: <%= @article.title %><%= link_to "View", @article.document.url(:original, false) %><br>
+Author: <%= @article.author.first_name%> <%=@article.author.last_name %><br>
+Subject: <%= @article.topic.name %> <br>
+</div>
+
+<div>
+<% if @user && @article.author != @user && @user.reviewer? %>
+
+  	<% if available_for_review %>
+    	<%= link_to "Review this Article", article_reviews_path(@article) %>
+  	<% else %>
+    	You have already reviewed this article
+    	<% get_review_to_delete %> 
+    	<%= link_to "Delete your review?", article_review_path(@article, @review), method: :delete %>
+  	<% end %>
+<% end %>
+
+</div>
+
+<div>
+<% if @article.author == @user %>
+Edit: 
+<%= render partial: "form", locals: {article: @article} %>
+<% end %> 
+</div>
+
+
+<br><br><br><br>
+
+<div>
+
+
+<%= render partial: 'comments/form', locals: {commentable: @article} %>
+
+
+
+</div>
