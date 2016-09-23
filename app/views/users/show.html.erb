@@ -20,7 +20,6 @@ Your Articles:
 Recommended Articles:
   <% if @user.most_commented_topic || @user.most_article_topic || @user.most_review_topic %>
     <% if @user.recommended_articles[0] %>
-
     <% @user.recommended_articles[0].to_ary.take(20).each do |article| %><br>
         <% if article %>
           <%= article.title %>
@@ -29,9 +28,6 @@ Recommended Articles:
           <% end %>
         <% end %>
       <% end %>  
-    
   <% end %>
-
-
 <% end %>
   
