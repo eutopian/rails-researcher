@@ -1,16 +1,15 @@
 class ReviewsController < ApplicationController
+	before_action :authenticate_user
+
 	def new
-		@user = current_user
 		@review = Review.new
 	end
 
 	def index
-		@user = current_user
 		@review = Review.new
 	end
 
 	def show
-		@user = current_user
 		@review = Review.find_by(id: params[:id])
 		@article = Article.find_by(id: @review.article_id)
 	end
@@ -21,19 +20,7 @@ class ReviewsController < ApplicationController
 		redirect_to article_path(@article)
 	end
 
-	# def update
-	# 	@user = current_user
-	# 	@article = Article.find_by(id: params[:id])
-	# 	if @article.update(article_params)
-	# 		redirect_to article_path(@article)
-	# 	else
-	# 		flash.now[:notice] = "Post can not be saved, please enter information."
-	# 		render :update
-	# 	end
-	# end
-
 	def destroy
-		@user = current_user
 		@review = Review.find_by(id: params[:id])
 		@article = Article.find_by(id: params[:article_id])
 		@review.destroy

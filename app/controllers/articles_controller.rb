@@ -1,12 +1,12 @@
 class ArticlesController < ApplicationController
 	include ArticlesHelper
+	before_action :authenticate_user
+
 	def new
-		@user = current_user
 		@article = Article.new
 	end
 
 	def show
-		@user = current_user
 		@article = Article.find_by(id: params[:id])
 		@comment = @article.comments.build
 		@review = get_review_to_delete
@@ -14,14 +14,15 @@ class ArticlesController < ApplicationController
 
 	def create
 		@article = Article.new(article_params)
-		@user = current_user
 		@article.author_id = @user.id
 		@article.save
 		redirect_to user_path(@user)
 	end
 
+	def edit
+	end
+
 	def update
-		@user = current_user
 		@article = Article.find_by(id: params[:id])
 		if @article.update(article_params)
 			redirect_to article_path(@article)
@@ -32,7 +33,6 @@ class ArticlesController < ApplicationController
 	end
 
 	def destroy
-		@user = current_user
 		article = Article.find_by(id: params[:id])
 		article.delete
 		redirect_to user_path(@user)

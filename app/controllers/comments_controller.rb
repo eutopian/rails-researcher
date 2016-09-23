@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
 	before_action :find_commentable
+	before_action :authenticate_user, only: [:edit, :update]
 
 	def index
 		@comments = @commentable.comments
@@ -14,6 +15,7 @@ class CommentsController < ApplicationController
 	end
 
 	def create
+		if current_user
 		@comment = @commentable.comments.create(comment_params)
 		@comment.user = current_user
 		@comment.save
@@ -23,15 +25,16 @@ class CommentsController < ApplicationController
 			@article = Article.find_by(id: @comment.parent_id)
 			redirect_to article_path(@article), notice: 'Your reply was successfully posted!'
 		end
+		else
+			redirect_to root_path, notice: 'Please sign in or create an account!'
+		end
 	end
 
 	def edit
-		@user = current_user
 		@comment = @commentable
 	end
 
 	def update
-		@user = current_user
 		@comment = Comment.find_by(id: params[:id])
 		@article = Article.find_by(id: @comment.parent_id)
 		@comment.update(comment_params)

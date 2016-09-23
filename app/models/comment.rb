@@ -7,6 +7,5 @@ class Comment < ApplicationRecord
   has_many :comments, as: :commentable
   # has_many :votes, as: :voteable
 
-  # validates :user_id, presence: true
-  # validates :content, presence: true, length: { maximum: 25000 }
+  validates :content, presence: true, length: { maximum: 25000 }
 end
