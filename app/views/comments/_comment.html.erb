@@ -1,6 +1,7 @@
 <li class="comment">
   <% if comment.id %>
     <div class="body">
+      <%= comment.user.first_name if comment.user %> wrote this <%= "#{time_ago_in_words(comment.created_at)} ago" if comment.created_at %><br>
       <%= comment.content %>
     </div>
 
@@ -8,23 +9,21 @@
     <%= f.hidden_field :commentable_type, value: "Comment" %>
     <%= f.hidden_field :commentable_id, value: comment.id %>
     <%= f.hidden_field :parent_id, value: comment.parent_id %>
-    <p><%= f.text_area :content, class: 'form-control', placeholder: "Add a Reply" %></p>
+    <%= f.text_area :content, class: 'form-control', placeholder: "Add a Reply" %>
 
-  <% if comment.user == @user %> 
-    <% if comment.created_at && comment.created_at + 5.minutes > Time.now %> 
-      <%= link_to "Edit", "/comments/#{comment.id}/edit" %>
+      <% if comment.user == @user %> 
+        <% if comment.created_at && comment.created_at + 5.minutes > Time.now %> 
+          <%= link_to "Edit", "/comments/#{comment.id}/edit" %>
+        <% end %>
+        <%= link_to "Delete", "/comments/#{comment.id}", method: :delete %>
+      <% end %>
+
+    <%= f.submit 'Add a Reply'%>
     <% end %>
-    <%= link_to "Delete", "/comments/#{comment.id}", method: :delete %>
   <% end %>
-  <small><%= comment.user.first_name if comment.user %> wrote this <%= "#{time_ago_in_words(comment.created_at)} ago" if comment.created_at %></small><br>
-
-  <%= f.submit 'Add a Reply'%>
-  <% end %>
-  <% end %>
-
   
   <% unless comment.comments.empty? %>
-    <ul class="comment_list">
+    <ul style="list-style: none;", class="comment_list">
       <%= render :partial => 'comments/comment', :collection => comment.comments %>
     </ul>
   <% end %>
