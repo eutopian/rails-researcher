@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
 	end
 
 	def show
-		@comment = @commentable.comments.find_by(id: params[:id])
+		@comment = @commentable
 	end
 
 	def create
@@ -27,15 +27,15 @@ class CommentsController < ApplicationController
 
 	def edit
 		@user = current_user
-		@comment = @commentable.comments.find_by(id: params[:id])
+		@comment = @commentable
 	end
 
 	def update
 		@user = current_user
-		@comment = @commentable.comments.find_by(id: params[:id])
-		# @article = Article.find_by(id: @comment.article_id)
+		@comment = Comment.find_by(id: params[:id])
+		@article = Article.find_by(id: @comment.parent_id)
 		@comment.update(comment_params)
-		redirect_to article_path(@comment.commentable)
+		redirect_to article_path(@article)
 	end
 
 	def destroy
@@ -49,13 +49,13 @@ class CommentsController < ApplicationController
 		params.require(:comment).permit(:content, :parent_id)
 	end
 
-
 	def find_commentable
 		if params[:article_id]
     	@commentable = Article.find_by(id: params[:article_id])
-    else
+    elsif params[:comment]
     	@commentable = Comment.find_by(id: params[:comment][:commentable_id])
-    	# @article = 
+    else
+    	@commentable = Comment.find_by(id: params[:id])
     end
  	end
 end

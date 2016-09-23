@@ -6,7 +6,5 @@
 <% end %>
 
 <ul>
-  <% unless commentable.comments.empty? %>
-  <%= render(partial: 'comments/comment', collection: commentable.comments, locals: {comment: @comment}) %>
-  <% end %>
+<%= render(partial: 'comments/comment', collection: commentable.comments, locals: {comment: @comment}) %>
 </ul>

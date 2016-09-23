@@ -1,4 +1,5 @@
 class ArticlesController < ApplicationController
+	include ArticlesHelper
 	def new
 		@user = current_user
 		@article = Article.new
@@ -8,6 +9,7 @@ class ArticlesController < ApplicationController
 		@user = current_user
 		@article = Article.find_by(id: params[:id])
 		@comment = @article.comments.build
+		@review = get_review_to_delete
 	end
 
 	def create
@@ -24,7 +26,7 @@ class ArticlesController < ApplicationController
 		if @article.update(article_params)
 			redirect_to article_path(@article)
 		else
-			flash.now[:notice] = "Post can not be saved, please enter information."
+			flash.now[:notice] = "Article can not be saved, please enter information."
 			render :update
 		end
 	end

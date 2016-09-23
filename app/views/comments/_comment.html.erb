@@ -1,17 +1,14 @@
 <li class="comment">
-
- 
-  <div class="body">
-    
-    <%= comment.content %>
-  </div>
+  <% if comment.id %>
+    <div class="body">
+      <%= comment.content %>
+    </div>
 
   <%= form_for Comment.new, html: {action: "articles/#{@article.id}/comments/#{comment.id}/comments", class: 'new_comment', id: 'new_comment', } do |f| %>
-  <%= f.hidden_field :commentable_type, value: "Comment" %>
-  <%= f.hidden_field :commentable_id, value: comment.id %>
-  <%= f.hidden_field :parent_id, value: comment.parent_id %>
-  
-  <p><%= f.text_area :content, class: 'form-control', placeholder: "Add a Reply" %></p>
+    <%= f.hidden_field :commentable_type, value: "Comment" %>
+    <%= f.hidden_field :commentable_id, value: comment.id %>
+    <%= f.hidden_field :parent_id, value: comment.parent_id %>
+    <p><%= f.text_area :content, class: 'form-control', placeholder: "Add a Reply" %></p>
 
   <% if comment.user == @user %> 
     <% if comment.created_at && comment.created_at + 5.minutes > Time.now %> 
@@ -23,9 +20,10 @@
 
   <%= f.submit 'Add a Reply'%>
   <% end %>
-   
+  <% end %>
 
-  <% if !!comment.comments.empty? %>
+  
+  <% unless comment.comments.empty? %>
     <ul class="comment_list">
       <%= render :partial => 'comments/comment', :collection => comment.comments %>
     </ul>
