@@ -1,4 +1,4 @@
-<% if @user && session[:user_id] == @user.id %>
+<% if authenticated_login %>
 
 <%= link_to "Update Your Information", edit_user_path(@user) %><br>
 <%= link_to "Upload an Article", new_article_path %><br>
@@ -29,5 +29,5 @@ Recommended Articles:
         <% end %>
       <% end %>  
   <% end %>
+
 <% end %>
-  

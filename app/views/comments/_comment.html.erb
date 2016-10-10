@@ -1,10 +1,11 @@
 <li class="comment">
   <% if comment.id %>
     <div class="body">
-      <%= comment.user.first_name if comment.user %> wrote this <%= "#{time_ago_in_words(comment.created_at)} ago" if comment.created_at %><br>
+      <font size="1"> <%= comment.user.first_name if comment.user %> wrote this <%= "#{time_ago_in_words(comment.created_at)} ago" if comment.created_at %><br></font>
       <%= comment.content %>
     </div>
-
+</li>
+<ul>
   <%= form_for Comment.new, html: {action: "articles/#{@article.id}/comments/#{comment.id}/comments", class: 'new_comment', id: 'new_comment', } do |f| %>
     <%= f.hidden_field :commentable_type, value: "Comment" %>
     <%= f.hidden_field :commentable_id, value: comment.id %>
@@ -21,10 +22,11 @@
     <%= f.submit 'Add a Reply'%>
     <% end %>
   <% end %>
-  
+
   <% unless comment.comments.empty? %>
     <ul style="list-style: none;", class="comment_list">
       <%= render :partial => 'comments/comment', :collection => comment.comments %>
     </ul>
   <% end %>
 </li>
+</ul>
