@@ -42,9 +42,9 @@ class CommentsController < ApplicationController
 	end
 
 	def destroy
-		@comment = @commentable.comments.find_by(id: params[:id])
-		@comment.delete
-		redirect_to article_path(@comment.commentable)
+		@article = Article.find_by(id: @commentable.parent_id)
+		@commentable.delete
+		redirect_to article_path(@article)
 	end
 
 	private

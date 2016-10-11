@@ -1,3 +1,4 @@
+Lots of great articles to checkout today:<br>
 <% Article.all.each do |article| %>
 	<%= link_to article.title, article_path(article) %>    |  
 	<%= link_to article.author.last_name + ", " + article.author.first_name, user_path(article.author) %><br><br>

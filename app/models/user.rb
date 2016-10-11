@@ -13,7 +13,7 @@ class User < ApplicationRecord
   has_many :reviews, :foreign_key => 'reviewer_id'
   has_many :topics, through: :articles
   has_many :comments
-  
+
   def self.create_with_omniauth(auth)
     new_user = self.new do |user|
       user.provider = auth["provider"]
@@ -62,6 +62,15 @@ class User < ApplicationRecord
     self.last_name = names[-1]
   end
 
+<<<<<<< HEAD
+  def self.most_articles
+    users = []
+    User.joins(:articles).group("author_id").count.sort_by{ |k,v| v}.reverse.take(5).each do |array|
+      users << array[0]
+    end
+    users
+    User.where(id: users)
+=======
   def is_liked(model)
     if Like.where(:likeable => model ,:user_id => self.id).present?
       Like.where(:likeable => model ,:user_id => self.id).last.like==true
@@ -77,6 +86,7 @@ class User < ApplicationRecord
   def self.find_model(id, type)
     model= type.constantize.find(id)
     return model
+>>>>>>> master
   end
 
 protected

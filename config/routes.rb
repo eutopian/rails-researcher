@@ -28,4 +28,6 @@ Rails.application.routes.draw do
   get '/auth/facebook/callback' => 'sessions#create'
   get '/auth/twitter/callback' => 'sessions#create'
   get '/auth/google_oauth2/callback' => 'sessions#create'
+
+  resources :rankings
 end
