@@ -14,6 +14,9 @@ Rails.application.routes.draw do
     resources :comments
   end
 
+  post '/likes' => 'likes#create', as: :like_create
+  post '/dislikes' => 'likes#dislike', as: :dislike_create
+
   get '/login' => 'sessions#new', as: 'login'
   post '/login' => 'sessions#create'
   get '/signup' => 'users#new', as: 'signup'
