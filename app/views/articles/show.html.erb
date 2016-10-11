@@ -31,7 +31,9 @@ Edit:
 
 <div>
 
+
 <h4>Join the Discussion</h4>
+<%= render partial: "likes/like", locals: {model_obj: @article } %>
 <%= render partial: 'comments/form', locals: {commentable: @article} %>
 
 

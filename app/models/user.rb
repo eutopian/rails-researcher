@@ -62,6 +62,23 @@ class User < ApplicationRecord
     self.last_name = names[-1]
   end
 
+  def is_liked(model)
+    if Like.where(:likeable => model ,:user_id => self.id).present?
+      Like.where(:likeable => model ,:user_id => self.id).last.like==true
+    end
+  end
+ 
+  def is_disliked(model)
+    if Like.where(:likeable => model ,:user_id => self.id).present?
+      Like.where(:likeable => model ,:user_id => self.id).last.like==false
+    end
+  end
+ 
+  def self.find_model(id, type)
+    model= type.constantize.find(id)
+    return model
+  end
+
 protected
 	def name_format(name)
 		name.downcase
