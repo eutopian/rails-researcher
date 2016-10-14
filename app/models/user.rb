@@ -62,7 +62,10 @@ class User < ApplicationRecord
     self.last_name = names[-1]
   end
 
-<<<<<<< HEAD
+  def name
+    self.first_name + " " + self.last_name
+  end
+
   def self.most_articles
     users = []
     User.joins(:articles).group("author_id").count.sort_by{ |k,v| v}.reverse.take(5).each do |array|
@@ -70,7 +73,8 @@ class User < ApplicationRecord
     end
     users
     User.where(id: users)
-=======
+  end
+
   def is_liked(model)
     if Like.where(:likeable => model ,:user_id => self.id).present?
       Like.where(:likeable => model ,:user_id => self.id).last.like==true
@@ -84,9 +88,13 @@ class User < ApplicationRecord
   end
  
   def self.find_model(id, type)
-    model= type.constantize.find(id)
-    return model
->>>>>>> master
+    if type
+      model = type.constantize.find(id)
+      return model
+    else
+      model = Like.find(id).likeable_type
+      return model
+    end
   end
 
 protected

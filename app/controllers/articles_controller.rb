@@ -2,6 +2,10 @@ class ArticlesController < ApplicationController
 	include ArticlesHelper
 	before_action :authenticate_user
 
+	def index
+		redirect_to root_path
+	end
+
 	def new
 		@article = Article.new
 	end
@@ -37,6 +41,16 @@ class ArticlesController < ApplicationController
 		article.delete
 		redirect_to user_path(@user)
 	end
+
+	def body
+    article = Article.find(params[:id])
+    render json: ArticleSerializer.serialize(article)
+  end
+
+  def article_data
+    article = Article.find(params[:id])
+    render plain: ArticleSerializer.serialize(article)
+  end
 
 	private
 	def article_params

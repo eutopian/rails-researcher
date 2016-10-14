@@ -1,0 +1,29 @@
+$('#myDiv').html('<')
+
+
+
+$('form.new_comment').submit(function(e) {
+	e.preventDefault();
+	var params = $(this).serialize()
+	var route = $(this).attr('action')
+	$.post(route, params).done(function(comment) {
+		$('ul#comments').append(
+			`<li class="comment">
+			    <div class="body">
+			      <font size="1"> Maggie wrote this 20 days ago<br></font>
+			      First comment! <input class="myButton" type="button" value="Add a Reply" ,="" data-id="1">
+			    </div>
+			</li>`
+
+			`
+			<li class="comment">
+			  <% if comment.id %>
+			    <div class="body">
+			      <font size="1"> <%= comment.user.first_name if comment.user %> wrote this <%= "#{time_ago_in_words(comment.created_at)} ago" if comment.created_at %><br></font>
+			      <%= comment.content %> <input class="myButton" type="button" value="Add a Reply", data-id="<%= comment.id %>" />
+			    </div>
+			</li>
+			`
+		)
+	})
+})

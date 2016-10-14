@@ -12,23 +12,43 @@ class CommentsController < ApplicationController
 
 	def show
 		@comment = @commentable
+		respond_to do |format|
+      format.html { render :show }
+      format.json { render json: @comment.to_json(:include => [:user, :commentable]) }
+    end
 	end
 
 	def create
 		if current_user
 		@comment = @commentable.comments.create(comment_params)
+		@article = Article.find_by(id: @comment.parent_id)
 		@comment.user = current_user
 		@comment.save
 		if @commentable.instance_of?(Article)
-			redirect_to article_path(@comment.commentable), notice: 'Your comment was successfully posted!'
-		else 
-			@article = Article.find_by(id: @comment.parent_id)
-			redirect_to article_path(@article), notice: 'Your reply was successfully posted!'
+			render json: @comment.to_json(:include => [:user, :commentable]), status: 201	
+		else
+			render json: @comment.to_json(:include => [:user, :commentable]), status: 201	
 		end
 		else
 			redirect_to root_path, notice: 'Please sign in or create an account!'
 		end
 	end
+
+	# def create
+	# 	if current_user
+	# 	@comment = @commentable.comments.create(comment_params)
+	# 	@comment.user = current_user
+	# 	@comment.save
+	# 	if @commentable.instance_of?(Article)
+	# 		redirect_to article_path(@comment.commentable), notice: 'Your comment was successfully posted!'
+	# 	else 
+	# 		@article = Article.find_by(id: @comment.parent_id)
+	# 		redirect_to article_path(@article), notice: 'Your reply was successfully posted!'
+	# 	end
+	# 	else
+	# 		redirect_to root_path, notice: 'Please sign in or create an account!'
+	# 	end
+	# end
 
 	def edit
 		@comment = @commentable

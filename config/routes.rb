@@ -22,12 +22,17 @@ Rails.application.routes.draw do
   get '/signup' => 'users#new', as: 'signup'
   post '/signup' => 'users#create'
   delete '/logout' => 'sessions#destroy'
-  # get '/comments/:id/edit' => 'comments#update'
-  # post '/comments/:id' => 'articles#show'
+  get '/comments/:id/edit' => 'comments#update'
+  post '/comments/:id' => 'articles#show'
 
   get '/auth/facebook/callback' => 'sessions#create'
   get '/auth/twitter/callback' => 'sessions#create'
   get '/auth/google_oauth2/callback' => 'sessions#create'
 
+  get 'articles/:id/article_data', to: 'articles#article_data'
+  get 'likes/:id/like_data', to: 'likes#like_data'
+  get 'comments/:id/create', to: 'comments#create'
+  post '/comments', to: 'comments#create'
+  
   resources :rankings
 end

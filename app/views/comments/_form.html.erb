@@ -1,3 +1,5 @@
+
+
 <%= form_for [commentable, Comment.new] do |f| %>
 	<%= f.hidden_field :commentable_type %>
 	<%= f.hidden_field :parent_id, value: @article.id %>
@@ -5,6 +7,7 @@
 	<%= f.submit %>
 <% end %>
 
-<ul style="list-style: none;">
+
+<ul id="comments" style="list-style: none;">
 <%= render(partial: 'comments/comment', collection: commentable.comments, locals: {comment: @comment}) %>
 </ul>

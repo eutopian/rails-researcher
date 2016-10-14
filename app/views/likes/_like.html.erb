@@ -1,6 +1,6 @@
 <div id="like_<%= model_obj.class.name %>_<%= model_obj.id %>">
 	<!-- like -->
-	(<%= count_like(model_obj)%>)
+	<%= (count_like(model_obj)) %>
 	<% if @current_user.is_liked(model_obj) %>
 		<%= link_to "Liked", like_create_path(id: model_obj.id, type: model_obj.class.name), method: :post, remote: true %>
 	<% else %>
@@ -8,7 +8,7 @@
 	<% end %>
 
 	<!-- dislike -->
-	(<%=count_dislike(model_obj)%>)
+	<%=count_dislike(model_obj)%>
 	<% if @current_user.is_disliked(model_obj) %>
 		<%= link_to "Disliked", dislike_create_path(id: model_obj.id, type: model_obj.class.name), method: :post, remote: true %>
 	<% else %>

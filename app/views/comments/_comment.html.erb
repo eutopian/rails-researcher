@@ -2,24 +2,27 @@
   <% if comment.id %>
     <div class="body">
       <font size="1"> <%= comment.user.first_name if comment.user %> wrote this <%= "#{time_ago_in_words(comment.created_at)} ago" if comment.created_at %><br></font>
-      <%= comment.content %>
-    </div>
-</li>
-<ul>
-  <%= form_for Comment.new, html: {action: "articles/#{@article.id}/comments/#{comment.id}/comments", class: 'new_comment', id: 'new_comment', } do |f| %>
-    <%= f.hidden_field :commentable_type, value: "Comment" %>
-    <%= f.hidden_field :commentable_id, value: comment.id %>
-    <%= f.hidden_field :parent_id, value: comment.parent_id %>
-    <%= f.text_area :content, class: 'form-control', placeholder: "Add a Reply" %>
+      <input class="myButton" type="text" value="<%= comment.content %> ", data-id="<%= comment.id %>"/>
 
+      
+      <br>
       <% if comment.user == @user %> 
         <% if comment.created_at && comment.created_at + 5.minutes > Time.now %> 
           <%= link_to "Edit", "/comments/#{comment.id}/edit" %>
         <% end %>
         <%= link_to "Delete", "/comments/#{comment.id}", method: :delete %>
       <% end %>
+    </div>
+</li>
 
-    <%= f.submit 'Add a Reply'%>
+<ul>
+
+  <%= form_for Comment.new, url: comment_comments_path(@article), method: :post, html: {class: "new_reply_#{comment.id}", style: "display: none"} do |f| %>
+    <%= f.hidden_field :commentable_type, value: "Comment" %>
+    <%= f.hidden_field :commentable_id, value: comment.id %>
+    <%= f.hidden_field :parent_id, value: comment.parent_id %>
+    <%= f.text_area :content, class: 'form-control', placeholder: "Write more things" %>
+    <%= f.submit class: "myButton2", value: 'Submit Reply' %>
     <% end %>
   <% end %>
 

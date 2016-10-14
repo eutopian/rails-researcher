@@ -33,6 +33,7 @@ gem 'paperclip', '~> 4.3', '>= 4.3.6'
 gem 'dotenv-rails'
 gem 'adminlte-rails'
 
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
