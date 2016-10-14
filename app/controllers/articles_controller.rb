@@ -14,6 +14,10 @@ class ArticlesController < ApplicationController
 		@article = Article.find_by(id: params[:id])
 		@comment = @article.comments.build
 		@review = get_review_to_delete
+		respond_to do |f|
+      f.html { render :show }
+      f.json { render json: @article.to_json(:include => [:author]) }
+    end
 	end
 
 	def create
@@ -42,14 +46,14 @@ class ArticlesController < ApplicationController
 		redirect_to user_path(@user)
 	end
 
-	def body
-    article = Article.find(params[:id])
-    render json: ArticleSerializer.serialize(article)
-  end
+	# def body
+ #    article = Article.find(params[:id])
+ #    render json: ArticleSerializer.serialize(article)
+ #  end
 
   def article_data
     article = Article.find(params[:id])
-    render plain: ArticleSerializer.serialize(article)
+    render json: article.to_json(include: :author)
   end
 
 	private

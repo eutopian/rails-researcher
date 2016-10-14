@@ -32,7 +32,7 @@ gem "omniauth-google-oauth2"
 gem 'paperclip', '~> 4.3', '>= 4.3.6'
 gem 'dotenv-rails'
 gem 'adminlte-rails'
-
+gem 'active_model_serializers'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
